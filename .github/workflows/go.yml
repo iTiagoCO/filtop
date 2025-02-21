@@ -9,23 +9,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+      # Checkout del código fuente
+      - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
+      # Configuración de Go
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
 
-    - name: Build for Linux
-      run: |
-        GOOS=linux GOARCH=amd64 go build -o filtop-linux-amd64
+      # Inicializar el módulo Go (si no se ha hecho previamente)
+      - name: Initialize Go module
+        run: |
+          go mod tidy || true
+          go mod vendor || true
 
-    - name: Test
-      run: go test -v ./...
+      # Compilar el proyecto para Linux
+      - name: Build for Linux
+        run: GOOS=linux GOARCH=amd64 go build -o filtop-linux-amd64
 
-    - name: Upload Linux binary as an artifact
-      uses: actions/upload-artifact@v4  
-      with:
-        name: filtop-linux-binary
-        path: filtop-linux-amd64
+      # Ejecutar pruebas (si tienes pruebas)
+      - name: Run tests
+        run: go test -v ./...
