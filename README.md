@@ -18,3 +18,5 @@ git clone https://github.com/iTiagoCO/filtop.git
 cd filtop
 go mod tidy
 go build -o filtop filtop.go
+
+![image](https://github.com/user-attachments/assets/c92ccb8f-6c5e-4c3e-ae1c-6d7cb9b3603f)
